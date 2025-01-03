@@ -1,1 +1,1 @@
-# courier-system
+A web-based courier management system designed to streamline order management, enhance customer experience, and improve delivery efficiency. This application provides functionality for users, drivers, and administrators to manage deliveries in real-time.
