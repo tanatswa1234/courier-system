@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Order - Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Courier Service Logo" />
+                <h4>Swift Courier</h4>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/user/orders">My Orders</a></li>
+                    <li><a href="/user/new-order">New Order</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h2>Create New Order</h2>
+            </header>
+
+            <!-- New Order Form -->
+            <section class="order-form">
+                <form method="POST">
+                    <label for="pickup_location">Pickup Location:</label>
+                    <input type="text" name="pickup_location" required>
+
+                    <label for="dropoff_location">Dropoff Location:</label>
+                    <input type="text" name="dropoff_location" required>
+
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="tel" name="contact_number" required placeholder="e.g. +263 77 123 4567">
+
+                    <label for="scheduled_time">Scheduled Delivery Date:</label>
+                    <input type="datetime-local" name="scheduled_time">
+
+                    <label for="delivery_instructions">Delivery Instructions:</label>
+                    <textarea name="delivery_instructions" rows="4" placeholder="Any specific instructions for delivery..."></textarea>
+
+                    <button type="submit">Submit Order</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

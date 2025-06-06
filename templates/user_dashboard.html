@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Courier Service Logo" />
+                <h4>Swift Courier</h4>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/user/orders">My Orders</a></li>
+                    <li><a href="/user/new-order">New Order</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h2>Welcome, {{ user.username}}</h2>
+                <p>Manage your orders and view updates.</p>
+            </header>
+
+            <!-- Order Management Section -->
+            <section class="order-section">
+                <h3>Your Recent Orders</h3>
+                {% if orders %}
+                    {% for order in orders %}
+                        <div class="order-card">
+                            <h4>Order #{{ order.id }}</h4>
+                            <p>Status: <span class="status {{ order.status | lower }}">{{ order.status }}</span></p>
+                            <p>Delivery Address: {{ order.delivery_address }}</p>
+                            <button class="action-btn">Track Order</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You have no recent orders.</p>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

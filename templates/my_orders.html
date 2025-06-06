@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Orders - Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <style>
+        /* Additional styling */
+        .order-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+        .order-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        .status.delivered { background-color: #28a745; color: white; }
+        .status.pending { background-color: #ffc107; color: black; }
+        .status.canceled { background-color: #dc3545; color: white; }
+        
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+        .close-btn {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Courier Service Logo" />
+                <h4>Swift Courier</h4>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/user/orders">My Orders</a></li>
+                    <li><a href="/user/new-order">New Order</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h2>Your Orders</h2>
+            </header>
+
+            <!-- Order List Section -->
+            <section class="order-section">
+                {% if orders %}
+                    {% for order in orders %}
+                        <div class="order-card">
+                            <h4>Order #{{ order[0] }}</h4>
+                            <p><strong>Status:</strong> <span class="status {{ order[4] | lower }}">{{ order[4] }}</span></p>
+                            <p><strong>Delivery Address:</strong> {{ order[2] }}</p>
+                            <p><strong>Scheduled Time:</strong> {{ order[5] }}</p>
+                            <p><strong>Created On:</strong> {{ order[6] }}</p>
+                            <button class="action-btn" onclick="openModal({{ order[0] }})">Track Order</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You have no orders yet.</p>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="trackingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>Order Tracking</h3>
+            <div id="orderDetails">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(orderId) {
+            // Show modal
+            document.getElementById('trackingModal').style.display = 'flex';
+            
+            // Fetch order details from the server
+            fetch(`/user/order-details?order_id=${orderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const detailsDiv = document.getElementById('orderDetails');
+                    detailsDiv.innerHTML = `
+                        <p><strong>Order ID:</strong> ${data.order_id}</p>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                        <p><strong>Pickup Location:</strong> ${data.pickup_location}</p>
+                        <p><strong>Dropoff Location:</strong> ${data.dropoff_location}</p>
+                        <p><strong>Distance:</strong> ${data.distance} km</p>
+                        <p><strong>Scheduled Time:</strong> ${data.scheduled_time}</p>
+                        <p><strong>Created At:</strong> ${data.created_at}</p>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('orderDetails').innerHTML = '<p>Error loading order details.</p>';
+                    console.error('Error fetching order details:', error);
+                });
+        }
+
+        function closeModal() {
+            document.getElementById('trackingModal').style.display = 'none';
+            document.getElementById('orderDetails').innerHTML = 'Loading...';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('trackingModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+</html>

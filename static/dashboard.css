@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.dashboard-container {
+  display: flex;
+  width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #151111;
+  color: #fff;
+  width: 250px;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar .logo {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sidebar .logo img {
+  width: 50px;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar .logo h4 {
+  font-size: 1.4rem;
+  color: #ff8c6b;
+}
+
+.nav ul {
+  list-style: none;
+  width: 100%;
+}
+
+.nav ul li {
+  margin: 1rem 0;
+}
+
+.nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  transition: background 0.3s;
+}
+
+.nav ul li a:hover {
+  background-color: #8371fd;
+}
+
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  background-color: #ffe0d2;
+  padding: 2rem;
+}
+
+.main-content header {
+  margin-bottom: 2rem;
+}
+
+.main-content header h2 {
+  color: #151111;
+}
+
+.main-content header p {
+  color: #8371fd;
+  font-size: 0.9rem;
+}
+
+.order-section {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.order-section h3 {
+  color: #151111;
+  margin-bottom: 1rem;
+}
+
+.order-card {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.order-card h4 {
+  color: #151111;
+}
+
+.order-card p {
+  color: #555;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.delivered {
+  color: #28a745;
+}
+
+.action-btn {
+  background-color: #151111;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+
+.order-form label {
+    display: block; /* Ensures labels are on separate lines */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+.order-form input,
+.order-form textarea {
+    width: 100%; /* Makes inputs full-width */
+    padding: 8px; /* Adds padding for comfort */
+    margin-bottom: 15px; /* Space between inputs */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+
+.action-btn:hover {
+  background-color: #8371fd;
+}
+
+/* Button styles */
+button[type="submit"] {
+    background-color: #151111; /* Match button color with sidebar */
+    color: #fff; /* White text color */
+    border: none; /* Removes default border */
+    padding: 0.5rem 1.5rem; /* Smaller padding for a smaller button */
+    border-radius: 0.5rem; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Adjust font size */
+    transition: background 0.3s; /* Transition effect for hover */
+    margin-top: 1rem; /* Space above the button */
+}
+
+button[type="submit"]:hover {
+    background-color: #ff8c6b; /* Change color on hover */
+}
+button:active {
+    transform: scale(0.95); /* Shrink on click */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+.form-group label {
+    display: block; /* Ensures labels are on separate lines */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%; /* Makes inputs full-width */
+    padding: 8px; /* Adds padding for comfort */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+

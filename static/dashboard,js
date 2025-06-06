@@ -1,0 +1,133 @@
+// Fetches orders and displays them in the dashboard
+async function fetchOrders() {
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            displayOrders(data.orders);
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+    }
+}
+
+// Displays fetched orders in the HTML
+function displayOrders(orders) {
+    const ordersContainer = document.getElementById('ordersContainer');
+    ordersContainer.innerHTML = orders.map(order => `
+        <div class="order">
+            <h3>Order ID: ${order.id}</h3>
+            <p>Destination: ${order.destination}</p>
+            <p>Status: ${order.status}</p>
+            <button onclick="updateOrder(${order.id})">Update Status</button>
+            <button onclick="deleteOrder(${order.id})">Delete Order</button>
+        </div>
+    `).join('');
+}
+
+// Sends new order data to the backend
+async function createOrder() {
+    const destination = document.getElementById('newOrderDestination').value;
+    const payload = { destination };
+    
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert("Order created successfully");
+            fetchOrders();
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error("Error creating order:", error);
+    }
+}
+// Updates the order status
+async function updateOrder(orderId) {
+    const newStatus = prompt("Enter new status:");
+    if (!newStatus) return;
+
+    try {
+        const response = await fetch(`/api/orders/${orderId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert("Order updated successfully");
+            fetchOrders();
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error("Error updating order:", error);
+    }
+}
+
+// Deletes an order
+async function deleteOrder(orderId) {
+    if (!confirm("Are you sure you want to delete this order?")) return;
+
+    try {
+        const response = await fetch(`/api/orders/${orderId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert("Order deleted successfully");
+            fetchOrders();
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error("Error deleting order:", error);
+    }
+}
+
+// Updates the user profile
+async function updateProfile() {
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const payload = { username, email };
+
+    try {
+        const response = await fetch('/api/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert("Profile updated successfully");
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+    }
+}
+
+// Logs the user out
+function logout() {
+    fetch('/logout', { method: 'POST' })
+        .then(() => {
+            alert("Logged out successfully");
+            window.location.href = '/login';
+        })
+        .catch(error => console.error("Error logging out:", error));
+}
+
+// Call fetchOrders on page load to populate the orders section
+document.addEventListener('DOMContentLoaded', fetchOrders);

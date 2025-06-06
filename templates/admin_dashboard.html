@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Delivery App</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#orders" class="active">Orders</a>
+                <a href="#history">Order History</a>
+                <a href="#profile">Profile</a>
+                <a href="#notifications">Notifications</a>
+                <a href="#help">Help</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Welcome, User!</h1>
+            </header>
+            <div class="dashboard-container">
+                <!-- Loading spinner -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                </div>
+                
+                <!-- Dynamic content goes here -->
+                <div id="dynamicContent">
+                    <h2>Your Orders</h2>
+                    <!-- Order cards will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+		document.addEventListener("DOMContentLoaded", () => {
+    const loadingSpinner = document.getElementById("loading");
+    const dynamicContent = document.getElementById("dynamicContent");
+
+    // Simulate loading orders from a server
+    function loadOrders() {
+        loadingSpinner.style.display = "flex"; // Show loading spinner
+
+        setTimeout(() => {
+            loadingSpinner.style.display = "none"; // Hide loading spinner
+            displayOrders(); // Call function to display orders
+        }, 2000); // Simulated loading time
+    }
+
+    // Function to display orders
+    function displayOrders() {
+        // Example orders
+        const orders = [
+            { id: 1, status: "Delivered", distance: "5 miles" },
+            { id: 2, status: "In Transit", distance: "10 miles" },
+            { id: 3, status: "Pending", distance: "2 miles" },
+        ];
+
+        orders.forEach(order => {
+            const orderCard = document.createElement("div");
+            orderCard.className = "order-card";
+            orderCard.innerHTML = `
+                <h3>Order #${order.id}</h3>
+                <p>Status: ${order.status}</p>
+                <p>Distance: ${order.distance}</p>
+            `;
+            dynamicContent.appendChild(orderCard);
+        });
+    }
+
+    // Load orders on page load
+    loadOrders();
+});
+	</script>
+</body>
+</html>

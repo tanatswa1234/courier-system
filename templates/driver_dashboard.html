@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Dashboard - Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <style>
+        /* Custom CSS for Driver Dashboard */
+        .dashboard-container {
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .order-card, .earnings-summary {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .status-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Courier Service Logo" />
+                <h4>Swift Courier</h4>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="">Assigned Orders</a></li>
+                    <li><a href="">Available Orders</a></li>
+                    <li><a href="">Earnings</a></li>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h2>Welcome,</h2>
+                <p>View and manage your assigned orders here.</p>
+            </header>
+
+            <!-- Assigned Orders Section -->
+            <section>
+                <h3>Assigned Orders</h3>
+                {% if orders %}
+                    {% for order in orders %}
+                        <div class="order-card">
+                            <h4>Order #{{ order[0] }}</h4>
+                            <p><strong>Pickup Location:</strong> {{ order[1] }}</p>
+                            <p><strong>Dropoff Location:</strong> {{ order[2] }}</p>
+                            <p><strong>Status:</strong> {{ order[3] }}</p>
+                            <p><strong>Scheduled Time:</strong> {{ order[4] }}</p>
+                            <form method="POST" action="/driver/update-status">
+                                <input type="hidden" name="order_id" value="{{ order[0] }}" />
+                                <select name="status" required>
+                                    <option value="">Update Status</option>
+                                    <option value="Picked Up">Picked Up</option>
+                                    <option value="In Transit">In Transit</option>
+                                    <option value="Delivered">Delivered</option>
+                                </select>
+                                <button type="submit" class="status-btn">Update</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No assigned orders.</p>
+                {% endif %}
+            </section>
+
+            <!-- Earnings Summary Section -->
+            <section>
+                <h3>Earnings Summary</h3>
+                <div class="earnings-summary">
+                    <p><strong>Total Deliveries:</strong> {{ driver.total_deliveries }}</p>
+                    <p><strong>Total Earnings:</strong> ${{ driver.total_earnings }}</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+            

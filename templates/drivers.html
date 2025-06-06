@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <title>Driver Management</title>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">AdminHub</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="/admin_dashboard">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="/drivers">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Drivers</span>
+                </a>
+            </li>
+            <li>
+                <a href="/deliveries">
+                    <i class='bx bxs-doughnut-chart'></i>
+                    <span class="text">Deliveries</span>
+                </a>
+            </li>
+            <li>
+                <a href="/analytics">
+                    <i class='bx bxs-message-dots'></i>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+            <li>
+                <a href="/settings">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <a href="#" class="nav-link">Drivers</a>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search drivers...">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Drivers Management</h1>
+                </div>
+                <a href="#" class="btn btn-primary btn-add" data-toggle="modal" data-target="#addDriverModal">
+                    <i class='bx bxs-plus-circle'></i>
+                    <span class="text">Add Driver</span>
+                </a>
+            </div>
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Driver List</h3>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Driver ID</th>
+                                <th>Name</th>
+                                <th>License Number</th>
+                                <th>Vehicle Details</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="driverTableBody">
+                            <!-- Dynamic content will be populated here using AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <!-- Add Driver Modal -->
+    <div class="modal" id="addDriverModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Driver</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDriverForm">
+                        <div class="form-group">
+                            <label for="driverName">Name:</label>
+                            <input type="text" class="form-control" id="driverName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="licenseNumber">License Number:</label>
+                            <input type="text" class="form-control" id="licenseNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleDetails">Vehicle Details:</label>
+                            <input type="text" class="form-control" id="vehicleDetails" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Driver</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Driver Modal -->
+    <div class="modal" id="editDriverModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Driver</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDriverForm">
+                        <input type="hidden" id="editDriverId">
+                        <div class="form-group">
+                            <label for="editDriverName">Name:</label>
+                            <input type="text" class="form-control" id="editDriverName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLicenseNumber">License Number:</label>
+                            <input type="text" class="form-control" id="editLicenseNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editVehicleDetails">Vehicle Details:</label>
+                            <input type="text" class="form-control" id="editVehicleDetails" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Driver</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            loadDrivers();
+
+            // Load drivers from the backend
+            function loadDrivers() {
+                $.ajax({
+                    url: '/api/drivers',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#driverTableBody').empty();
+                        data.forEach(driver => {
+                            $('#driverTableBody').append(`
+                                <tr>
+                                    <td>${driver.driver_id}</td>
+                                    <td>${driver.name}</td>
+                                    <td>${driver.license_number}</td>
+                                    <td>${driver.vehicle_details}</td>
+                                    <td>${driver.status}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" onclick="editDriver(${driver.driver_id})">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteDriver(${driver.driver_id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(err) {
+                        console.error('Error loading drivers:', err);
+                    }
+                });
+            }
+
+            $.ajax({
+    url: '/api/drivers', // Adjust API endpoint as needed
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(newDriver),
+    success: function(response) {
+        $('#addDriverModal').modal('hide'); // Hide modal on success
+        fetchDrivers(); // Refresh the driver list
+        $('#addDriverForm')[0].reset(); // Reset form fields
+        alert(response.message); // Optional user feedback
+    },
+    error: function(err) {
+        console.error('Error adding driver:', err);
+        alert('Error adding driver. Please check the console for details.'); // User feedback
+    }
+});
+
+
+            // Edit driver form submission
+            $('#editDriverForm').on('submit', function(e) {
+                e.preventDefault();
+                const updatedDriver = {
+                    name: $('#editDriverName').val(),
+                    license_number: $('#editLicenseNumber').val(),
+                    vehicle_details: $('#editVehicleDetails').val(),
+                };
+                const driverId = $('#editDriverId').val();
+                $.ajax({
+                    url: `/api/drivers/${driverId}`,
+                    method: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(updatedDriver),
+                    success: function(response) {
+                        alert(response.message);
+                        $('#editDriverModal').modal('hide');
+                        loadDrivers(); // Reload drivers after editing
+                    },
+                    error: function(err) {
+                        console.error('Error updating driver:', err);
+                        alert('Failed to update driver: ' + err.responseJSON.error);
+                    }
+                });
+            });
+        });
+
+        function deleteDriver(driverId) {
+            if (confirm("Are you sure you want to delete this driver?")) {
+                $.ajax({
+                    url: `/api/drivers/${driverId}`,
+                    method: 'DELETE',
+                    success: function(response) {
+                        alert(response.message);
+                        loadDrivers(); // Reload drivers after deletion
+                    },
+                    error: function(err) {
+                        console.error('Error deleting driver:', err);
+                        alert('Failed to delete driver: ' + err.responseJSON.error);
+                    }
+                });
+            }
+        }
+
+        function editDriver(driverId) {
+            $.ajax({
+                url: `/api/drivers/${driverId}`,
+                method: 'GET',
+                success: function(driver) {
+                    $('#editDriverId').val(driver.driver_id);
+                    $('#editDriverName').val(driver.name);
+                    $('#editLicenseNumber').val(driver.license_number);
+                    $('#editVehicleDetails').val(driver.vehicle_details);
+                    $('#editDriverModal').modal('show');
+                },
+                error: function(err) {
+                    console.error('Error fetching driver for edit:', err);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

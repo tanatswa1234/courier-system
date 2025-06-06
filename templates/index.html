@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+    <main>
+        <div class="box">
+            <div class="inner-box">
+                <div class="forms-wrap">
+
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                <ul>
+                                {% for category, message in messages %}
+                                    <li class="{{ category }}">{{ message }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form action="/login" method="POST" autocomplete="off" class="sign-in-form">
+                        <div class="logo">
+                            <img src="./static/logo.jpg" alt="Courier Service Logo" />
+                            <h4> Swift Courier Service</h4>
+                        </div>
+
+                        <div class="heading">
+                            <h2>Welcome Back</h2>
+                            <h6>Not registered yet?</h6>
+                            <a href="#" class="toggle">Sign up</a>
+                        </div>
+
+                        <div class="actual-form">
+                            <div class="input-wrap">
+                                <input
+                                    type="text"
+                                    name="username"
+                                    id="login-username"
+                                    minlength="4"
+                                    class="input-field"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <label for="login-username">Username</label>
+                            </div>
+
+                            <div class="input-wrap">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="login-password"
+                                    minlength="4"
+                                    class="input-field"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <label for="login-password">Password</label>
+                            </div>
+
+                            <input type="submit" value="Sign In" class="sign-btn" />
+
+                            
+                        </div>
+                    </form>
+
+                    <form action="/signup" method="POST" autocomplete="off" class="sign-up-form">
+                        <div class="logo">
+                            <img src="./static/logo.jpg" alt="Courier Service Logo" />
+                            <h4> Swift Courier Service</h4>
+                        </div>
+
+                        <div class="heading">
+                            <h2>Get Started</h2>
+                            <h6>Already have an account?</h6>
+                            <a href="#" class="toggle">Sign in</a>
+                        </div>
+
+                        <div class="actual-form">
+                            <div class="input-wrap">
+                                <input
+                                    type="text"
+                                    name="username"
+                                    id="signup-username"
+                                    minlength="4"
+                                    class="input-field"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <label for="signup-username">Username</label>
+                            </div>
+
+                            <div class="input-wrap">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="signup-email"
+                                    class="input-field"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <label for="signup-email">Email</label>
+                            </div>
+
+                            <div class="input-wrap">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="signup-password"
+                                    minlength="4"
+                                    class="input-field"
+                                    autocomplete="off"
+                                    required
+                                />
+                                <label for="signup-password">Password</label>
+                            </div>
+
+                            <div class="input-wrap">
+                                <label for="role">Select Role:</label>
+                                <select name="role" id="role" class="input-field" required>
+                                    <option value="user">User</option>
+                                    <option value="driver">Driver</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <input type="submit" value="Sign Up" class="sign-btn" />
+
+                            <p class="text">
+                                By signing up, I agree to the
+                                <a href="#">Terms of Services</a> and
+                                <a href="#">Privacy Policy</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="carousel">
+                    <div class="images-wrapper">
+                        <img src="./static/del.jpg" class="image img-1 show" alt="Delivery Service Image 1" />
+                        <img src="./static/del2.jpg" class="image img-2" alt="Delivery Service Image 2" />
+                        <img src="./img/image3.png" class="image img-3" alt="Delivery Service Image 3" />
+                    </div>
+
+                    <div class="text-slider">
+                        <div class="text-wrap">
+                            <div class="text-group">
+                                <h2>Deliveries across Zimbabwe</h2>
+                                <h2>We deliver everywhere in Zimbabwe</h2>
+                                <h2>Fast and Reliable Service</h2>
+                            </div>
+                        </div>
+
+                        <div class="bullets">
+                            <span class="active" data-value="1"></span>
+                            <span data-value="2"></span>
+                            <span data-value="3"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Javascript file -->
+    <script>
+        const inputs = document.querySelectorAll(".input-field");
+        const toggle_btn = document.querySelectorAll(".toggle");
+        const main = document.querySelector("main");
+        const bullets = document.querySelectorAll(".bullets span");
+        const images = document.querySelectorAll(".image");
+
+        inputs.forEach((inp) => {
+            inp.addEventListener("focus", () => {
+                inp.classList.add("active");
+            });
+            inp.addEventListener("blur", () => {
+                if (inp.value != "") return;
+                inp.classList.remove("active");
+            });
+        });
+
+        toggle_btn.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                main.classList.toggle("sign-up-mode");
+            });
+        });
+
+        function moveSlider() {
+            let index = this.dataset.value;
+
+            let currentImage = document.querySelector(`.img-${index}`);
+            images.forEach((img) => img.classList.remove("show"));
+            currentImage.classList.add("show");
+
+            const textSlider = document.querySelector(".text-group");
+            textSlider.style.transform = `translateY(${-(index - 1) * 2.2}rem)`;
+
+            bullets.forEach((bull) => bull.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        bullets.forEach((bullet) => {
+            bullet.addEventListener("click", moveSlider);
+        });
+    </script>
+
+    <style>
+        /* Flash messages style */
+        .flash-messages {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flash-messages ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .flash-messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .flash-messages .success {
+            background-color: #28a745; /* Green */
+        }
+
+        .flash-messages .danger {
+            background-color: #dc3545; /* Red */
+        }
+
+        .flash-messages .warning {
+            background-color: #ffc107; /* Yellow */
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile - Swift Courier Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <style>
+        .profile-picture {
+            width: 150px; /* Set desired width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 50%; /* Makes it circular */
+            display: block; /* Centering alignment */
+            margin: 20px auto; /* Centering with margin */
+        }
+        .profile-header {
+            text-align: center; /* Center align text and image */
+            margin-bottom: 20px; /* Space below the header */
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: inline-block; /* Center flash message */
+        }
+        .flash-messages .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .flash-messages .danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .flash-messages .warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .form-group {
+            margin-bottom: 15px; /* Space between form elements */
+        }
+        .form-group label {
+            display: block; /* Make labels block elements */
+            margin-bottom: 5px; /* Space below labels */
+        }
+        .form-group input {
+            width: 100%; /* Full width for inputs */
+            padding: 8px; /* Padding for better usability */
+            border: 1px solid #ccc; /* Border styling */
+            border-radius: 4px; /* Rounded corners */
+        }
+        .action-btn {
+            padding: 10px 15px; /* Button padding */
+            background-color: #007bff; /* Bootstrap primary color */
+            color: #fff; /* White text */
+            border: none; /* No border */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+        }
+        .action-btn:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Courier Service Logo" />
+                <h4>Swift Courier</h4>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/user/orders">My Orders</a></li>
+                    <li><a href="/user/new-order">New Order</a></li>
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="profile-header">
+                <h2>User Profile</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+            
+                <p>Update your profile information below.</p>
+                {% if user[2] %}
+                    <img src="{{ url_for('static', filename='profile_pictures/' + user[2]) }}" alt="Profile Picture" class="profile-picture" />
+                {% endif %}
+            </header>            
+            
+
+            <section class="profile-section">
+                <h3>Your Information</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" value="{{ user[0] }}" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ user[1] }}" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_picture">Profile Picture</label>
+                        <input type="file" id="profile_picture" name="profile_picture" accept="image/*" />
+                    </div>
+                    <button type="submit" class="action-btn">Update Profile</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
